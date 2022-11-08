@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Formatting.Json;
 
 namespace ConsoleUI;
 
@@ -14,11 +15,14 @@ public class Program
         var builder = new ConfigurationBuilder();
         BuildConfig(builder);
 
+        var dateTimeStr = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(builder.Build())
             .Enrich.FromLogContext()
             .WriteTo.Console()
-            .WriteTo.File($"C:\\temp\\IcptUploader_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.txt")
+            .WriteTo.File($"C:\\temp\\IcptUploader_{dateTimeStr}.txt")
+            .WriteTo.File(path:$"C:\\temp\\IcptUploader_{dateTimeStr}.json", formatter: new JsonFormatter())
             .CreateLogger();
 
         Log.Logger.Information("Applicatoin Starting");
@@ -34,7 +38,6 @@ public class Program
         var service = ActivatorUtilities.CreateInstance<GreetingService>(host.Services);
         service.Run();
     }
-
 
     static void BuildConfig(IConfigurationBuilder builder)
     {
