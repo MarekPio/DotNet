@@ -17,7 +17,7 @@ public class Program
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(builder.Build())
             .Enrich.FromLogContext()
-            .WriteTo.Console()
+            //.WriteTo.Console()
             .CreateLogger();
 
         Log.Logger.Information("Applicatoin Starting");

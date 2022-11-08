@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace ConsoleUI;
 
@@ -16,9 +17,24 @@ public class GreetingService : IGreetingService
 
     public void Run()
     {
-        for (int i = 0; i < _config.GetValue<int>("LoopTimes"); i++)
+        try
         {
-            _log.LogInformation("Run number {runNumber}", i);
+            for (int i = 0; i < _config.GetValue<int>("LoopTimes"); i++)
+            {
+                if (i == 5)
+                {
+                    throw new Exception("This is our demo exception");
+                }
+                else
+                {
+                    _log.LogInformation("Run number {runNumber}", i);
+                }
+
+            }
+        }
+        catch(Exception ex)
+        {
+            _log.LogError(ex.Message);
         }
     }
 }
