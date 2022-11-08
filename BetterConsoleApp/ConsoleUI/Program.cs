@@ -17,7 +17,8 @@ public class Program
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(builder.Build())
             .Enrich.FromLogContext()
-            //.WriteTo.Console()
+            .WriteTo.Console()
+            .WriteTo.File($"C:\\temp\\IcptUploader_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.txt")
             .CreateLogger();
 
         Log.Logger.Information("Applicatoin Starting");
