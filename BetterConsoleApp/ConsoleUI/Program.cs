@@ -21,8 +21,9 @@ public class Program
             .ReadFrom.Configuration(builder.Build())
             .Enrich.FromLogContext()
             .WriteTo.Console()
-            .WriteTo.File($"C:\\temp\\IcptUploader_{dateTimeStr}.txt")
-            .WriteTo.File(path:$"C:\\temp\\IcptUploader_{dateTimeStr}.json", formatter: new JsonFormatter())
+            //.WriteTo.File($"C:\\temp\\IcptUploader_{dateTimeStr}.txt")
+            //.WriteTo.File(path:$"C:\\temp\\IcptUploader_{dateTimeStr}.json", formatter: new JsonFormatter())
+            .WriteTo.Seq("http://localhost:5341")
             .CreateLogger();
 
         Log.Logger.Information("Applicatoin Starting");
@@ -37,6 +38,8 @@ public class Program
 
         var service = ActivatorUtilities.CreateInstance<GreetingService>(host.Services);
         service.Run();
+
+        Log.CloseAndFlush();
     }
 
     static void BuildConfig(IConfigurationBuilder builder)
