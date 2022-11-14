@@ -12,6 +12,7 @@ public class Program
 {
     static void Main(string[] args)
     {
+        int LicenseId = 1;
         var builder = new ConfigurationBuilder();
         BuildConfig(builder);
 
@@ -20,10 +21,16 @@ public class Program
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(builder.Build())
             .Enrich.FromLogContext()
+            //.Enrich.WithMachineName()
+            //.Enrich.WithProcessId()
+            //.Enrich.WithThreadId()
+            //.Enrich.WithProperty("Application", "ICPT Uploader") // Implemented in Seq API Key
+            //.Enrich.WithProperty("Version", "1.0.0") // Implemented in Seq API Key
+            .Enrich.WithProperty("LicenseId", LicenseId)
             .WriteTo.Console()
-            //.WriteTo.File($"C:\\temp\\IcptUploader_{dateTimeStr}.txt")
-            //.WriteTo.File(path:$"C:\\temp\\IcptUploader_{dateTimeStr}.json", formatter: new JsonFormatter())
-            .WriteTo.Seq("http://localhost:5341")
+            .WriteTo.File($"C:\\temp\\IcptUploader_{dateTimeStr}.txt")
+            .WriteTo.File(path:$"C:\\temp\\IcptUploader_{dateTimeStr}.json", formatter: new JsonFormatter())
+            .WriteTo.Seq("http://localhost:5341", apiKey: "ezE5FhCrJ8XOo1sB3Ar1")
             .CreateLogger();
 
         Log.Logger.Information("Applicatoin Starting");
