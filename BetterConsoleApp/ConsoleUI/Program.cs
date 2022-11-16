@@ -19,8 +19,11 @@ public class Program
         var dateTimeStr = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
 
         Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(builder.Build())
+            //.ReadFrom.Configuration(builder.Build())
             .Enrich.FromLogContext()
+            .MinimumLevel.Information()
+            .MinimumLevel.Override("Microsoft",Serilog.Events.LogEventLevel.Warning)
+            .MinimumLevel.Override("System",Serilog.Events.LogEventLevel.Warning)
             //.Enrich.WithMachineName()
             //.Enrich.WithProcessId()
             //.Enrich.WithThreadId()
